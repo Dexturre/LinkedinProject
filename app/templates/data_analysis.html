@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .stat-card h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+        .nav-links {
+            margin-top: 30px;
+        }
+        .nav-links a {
+            margin-right: 15px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        .insights {
+            background-color: #e7f3ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .insights h3 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Candidate Data Analysis</h1>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Candidates</h3>
+                <div class="stat-value">{{ total_candidates }}</div>
+                <div class="stat-label">Number of candidates in dataset</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Hired Candidates</h3>
+                <div class="stat-value">{{ hired_count }}</div>
+                <div class="stat-label">Candidates selected for hire</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Hire Rate</h3>
+                <div class="stat-value">{{ "%.1f"|format(hire_rate * 100) }}%</div>
+                <div class="stat-label">Percentage of candidates hired</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Average Skill Score</h3>
+                <div class="stat-value">{{ "%.1f"|format(avg_skill) }}</div>
+                <div class="stat-label">Out of 100</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Max Skill Score</h3>
+                <div class="stat-value">{{ max_skill }}</div>
+                <div class="stat-label">Highest skill score achieved</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Min Skill Score</h3>
+                <div class="stat-value">{{ min_skill }}</div>
+                <div class="stat-label">Lowest skill score</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Average Experience</h3>
+                <div class="stat-value">{{ "%.1f"|format(avg_experience) }}</div>
+                <div class="stat-label">Years of experience</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Average Expected Salary</h3>
+                <div class="stat-value">${{ "%.2f"|format(avg_salary) }}</div>
+                <div class="stat-label">USD per year</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Max Expected Salary</h3>
+                <div class="stat-value">${{ "%.2f"|format(max_salary) }}</div>
+                <div class="stat-label">Highest salary expectation</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Min Expected Salary</h3>
+                <div class="stat-value">${{ "%.2f"|format(min_salary) }}</div>
+                <div class="stat-label">Lowest salary expectation</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Max Experience</h3>
+                <div class="stat-value">{{ max_experience }}</div>
+                <div class="stat-label">Years (maximum)</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>Min Experience</h3>
+                <div class="stat-value">{{ min_experience }}</div>
+                <div class="stat-label">Years (minimum)</div>
+            </div>
+        </div>
+        
+        <div class="insights">
+            <h3>Education Level Distribution</h3>
+            <ul>
+                {% for level, count in education_counts.items() %}
+                <li><strong>Level {{ level }}:</strong> {{ count }} candidates 
+                    {% if level == 1 %}(Bachelor's){% endif %}
+                    {% if level == 2 %}(Master's){% endif %}
+                    {% if level == 3 %}(PhD){% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+        <div class="insights">
+            <h3>Salary Suggestions Based on Experience & Skills</h3>
+            <ul>
+                <li><strong>Entry Level (0-5 years):</strong> ${{ "%.2f"|format(salary_suggestions.entry_level) }}</li>
+                <li><strong>Mid Level (6-15 years):</strong> ${{ "%.2f"|format(salary_suggestions.mid_level) }}</li>
+                <li><strong>Senior Level (16+ years):</strong> ${{ "%.2f"|format(salary_suggestions.senior_level) }}</li>
+                <li><strong>High Skill (80+ score):</strong> ${{ "%.2f"|format(salary_suggestions.high_skill) }}</li>
+                <li><strong>Low Skill (below 50):</strong> ${{ "%.2f"|format(salary_suggestions.low_skill) }}</li>
+            </ul>
+        </div>
+        
+        <div class="insights">
+            <h3>Key Insights</h3>
+            <ul>
+                <li><strong>Hire Rate:</strong> {{ "%.1f"|format(hire_rate * 100) }}% of candidates were hired</li>
+                <li><strong>Skill Distribution:</strong> Average skill score is {{ "%.1f"|format(avg_skill) }} with range from {{ min_skill }} to {{ max_skill }}</li>
+                <li><strong>Experience:</strong> Candidates have an average of {{ "%.1f"|format(avg_experience) }} years of experience (range: {{ min_experience }}-{{ max_experience }} years)</li>
+                <li><strong>Salary Expectations:</strong> Average expected salary is ${{ "%.2f"|format(avg_salary) }} with range from ${{ "%.2f"|format(min_salary) }} to ${{ "%.2f"|format(max_salary) }}</li>
+                <li><strong>Correlation:</strong> Higher skill scores and experience levels generally correlate with higher hire rates and salary expectations</li>
+            </ul>
+        </div>
+        
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">Go Back to Prediction</a>
+            <a href="{{ url_for('report') }}">View Model Report</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+Logistic Regression:
+  Accuracy: 0.5500
+  Precision: 0.5662
+  Recall: 0.7130
+  F1 Score: 0.6311
+  Confusion Matrix: [[33, 59], [31, 77]]
+
+KNN:
+  Accuracy: 0.4800
+  Precision: 0.5172
+  Recall: 0.5556
+  F1 Score: 0.5357
+  Confusion Matrix: [[36, 56], [48, 60]]
+
+Decision Tree:
+  Accuracy: 0.4950
+  Precision: 0.5321
+  Recall: 0.5370
+  F1 Score: 0.5346
+  Confusion Matrix: [[41, 51], [50, 58]]
+

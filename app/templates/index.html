@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Smart Job Candidate Screening</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="uiverse-container">
+        <h1>🤖 AI Smart Job Candidate Screening</h1>
+        
+        <div style="text-align: center; margin-bottom: 30px;">
+            <p>Predict candidate hire decisions using machine learning models</p>
+        </div>
+
+        <form action="{{ url_for('predict') }}" method="post">
+            <div class="form-group">
+                <label for="experience">Experience Level:</label>
+                <div class="glass-radio-group-vertical">
+                    <input checked id="experience-entry" name="experience" type="radio" value="1" />
+                    <label data-color="silver" for="experience-entry">
+                        <span class="radio-indicator">
+                            <span class="checkmark">✓</span>
+                        </span>
+                        <span class="label-text">Entry Level (1)</span>
+                    </label>
+
+                    <input id="experience-mid" name="experience" type="radio" value="2" />
+                    <label data-color="gold" for="experience-mid">
+                        <span class="radio-indicator">
+                            <span class="checkmark">✓</span>
+                        </span>
+                        <span class="label-text">Mid Level (2)</span>
+                    </label>
+
+                    <input id="experience-senior" name="experience" type="radio" value="3" />
+                    <label data-color="platinum" for="experience-senior">
+                        <span class="radio-indicator">
+                            <span class="checkmark">✓</span>
+                        </span>
+                        <span class="label-text">Senior Level (3)</span>
+                    </label>
+
+                    <div class="glass-glider-vertical"></div>
+                </div>
+                <small style="color: rgba(255, 255, 255, 0.7); font-size: 0.9em;">
+                    1 = Entry Level, 2 = Mid Level, 3 = Senior Level
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="education">Education Level:</label>
+                <div class="glass-input-container">
+                    <input type="number" name="education" min="1" max="3" required 
+                           placeholder="1: Bachelor, 2: Master, 3: PhD" class="glass-input">
+                </div>
+                <small style="color: rgba(255, 255, 255, 0.7); font-size: 0.9em;">
+                    1 = Bachelor's, 2 = Master's, 3 = PhD
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="skill_score">Skill Match Score (0-100):</label>
+                <div class="glass-input-container">
+                    <input type="number" name="skill_score" min="0" max="100" required 
+                           placeholder="Enter skill score (0-100)" class="glass-input">
+                </div>
+            </div>
+
+
+            <button type="submit" class="uiverse-button">
+                <span class="blob1"></span>
+                <span class="inner">Predict Hire Decision</span>
+            </button>
+        </form>
+
+        <div class="nav-links">
+            <a href="{{ url_for('report') }}">View Model Report</a>
+            <a href="{{ url_for('data_analysis') }}">Data Analysis</a>
+        </div>
+
+        <div class="system-card">
+            <h3 class="heading">About This System</h3>
+            <p>This AI-powered screening system uses three machine learning models:</p>
+            <ul>
+                <li>Logistic Regression</li>
+                <li>K-Nearest Neighbors (KNN)</li>
+                <li>Decision Tree</li>
+            </ul>
+            <p>Each model provides an independent prediction based on candidate qualifications.</p>
+        </div>
+    </div>
+</body>
+</html>

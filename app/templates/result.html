@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Result - AI Candidate Screening</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Navigation Links */
+        .nav-links {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .nav-links a {
+            display: inline-block;
+            margin: 0 10px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #e81cff, #40c9ff);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background: linear-gradient(135deg, #fc00ff, #00dbde);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(252, 0, 255, 0.3);
+        }
+
+        /* Card Styling */
+        .parent {
+            width: 320px;
+            height: 380px;
+            perspective: 1000px;
+            display: inline-block;
+            margin: 20px;
+            vertical-align: top;
+        }
+
+        .card {
+            height: 100%;
+            border-radius: 50px;
+            background: linear-gradient(135deg, rgb(0, 255, 214), rgb(8, 226, 96));
+            transition: all 0.5s ease-in-out;
+            transform-style: preserve-3d;
+            box-shadow: rgba(5, 71, 17, 0) 40px 50px 25px -40px, rgba(5, 71, 17, 0.2) 0px 25px 25px -5px;
+            position: relative;
+        }
+
+        .card.not-hired {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+        }
+
+        .glass {
+            transform-style: preserve-3d;
+            position: absolute;
+            inset: 8px;
+            border-radius: 55px;
+            background: linear-gradient(0deg, rgba(255, 255, 255, 0.349), rgba(255, 255, 255, 0.815));
+            transform: translate3d(0px, 0px, 25px);
+            border-left: 1px solid white;
+            border-bottom: 1px solid white;
+            transition: all 0.5s ease-in-out;
+        }
+
+        .content {
+            padding: 80px 30px 20px 30px;
+            transform: translate3d(0, 0, 26px);
+            height: calc(100% - 100px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .model-name {
+            display: block;
+            color: #00894d;
+            font-weight: 900;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .card.not-hired .model-name {
+            color: #8a0000;
+        }
+
+        .prediction-text {
+            display: block;
+            color: rgba(0, 137, 78, 0.9);
+            font-size: 16px;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .card.not-hired .prediction-text {
+            color: rgba(138, 0, 0, 0.9);
+        }
+
+        .probability-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .probability-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #00dbde;
+        }
+
+        .confidence-level {
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 5px;
+        }
+
+        .high-confidence { color: #00ff8c; }
+        .medium-confidence { color: #ffcc00; }
+        .low-confidence { color: #ff4757; }
+
+        /* Interpretation Guide */
+        .interpretation-guide {
+            margin-top: 30px;
+            padding: 20px;
+            background: #000000;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        /* Candidate Information Styling */
+        .candidate-info {
+            background: #000000;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .info-item {
+            background: #000000;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #00dbde;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Consensus Styling */
+        .consensus, .mixed-results {
+            background: #000000;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .consensus {
+            color: #00dbde;
+            border-color: rgba(0, 219, 222, 0.3);
+        }
+
+        .mixed-results {
+            color: #ffcc00;
+            border-color: rgba(255, 204, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="uiverse-container">
+        <h1>🎯 Prediction Results</h1>
+
+        <!-- Candidate Information -->
+        <div class="candidate-info">
+            <h3>Candidate Details</h3>
+            <div class="info-grid">
+                <div class="info-item">
+                    <strong>Experience Level:</strong>
+                    {% if experience == '1' %}Entry Level
+                    {% elif experience == '2' %}Mid Level
+                    {% elif experience == '3' %}Senior Level
+                    {% else %}{{ experience }}
+                    {% endif %}
+                </div>
+                <div class="info-item">
+                    <strong>Education:</strong> Level {{ education }}
+                </div>
+                <div class="info-item">
+                    <strong>Skill Score:</strong> {{ skill_score }} / 100
+                </div>
+                <div class="info-item">
+                    <strong>Expected Salary:</strong> ${{ "%.2f"|format(expected_salary|float) }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Predictions -->
+        <div class="parent">
+            <div class="card {{ 'hired' if hire_log_reg == 1 else 'not-hired' }}">
+                <div class="glass"></div>
+                <div class="content">
+                    <span class="model-name">Logistic Regression</span>
+                    <p class="prediction-text">
+                        {{ '✅ Yes, this candidate has the right abilities. You should hire!' if hire_log_reg == 1 else '❌ No, this candidate may not meet your requirements' }}
+                    </p>
+                    {% if log_reg_proba is not none %}
+                    <div class="probability-info">
+                        <strong>Hire Probability: </strong>
+                        <span class="probability-value">{{ "%.1f"|format(log_reg_proba * 100) }}%</span>
+                        <div class="confidence-level">
+                            {% if log_reg_proba >= 0.7 %}
+                            <span class="high-confidence">High confidence</span>
+                            {% elif log_reg_proba >= 0.4 %}
+                            <span class="medium-confidence">Medium confidence</span>
+                            {% else %}
+                            <span class="low-confidence">Low confidence</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="parent">
+            <div class="card {{ 'hired' if hire_knn == 1 else 'not-hired' }}">
+                <div class="glass"></div>
+                <div class="content">
+                    <span class="model-name">K-Nearest Neighbors</span>
+                    <p class="prediction-text">
+                        {{ '✅ Yes, this candidate has the right abilities. You should hire!' if hire_knn == 1 else '❌ No, this candidate may not meet your requirements' }}
+                    </p>
+                    {% if knn_proba is not none %}
+                    <div class="probability-info">
+                        <strong>Hire Probability: </strong>
+                        <span class="probability-value">{{ "%.1f"|format(knn_proba * 100) }}%</span>
+                        <div class="confidence-level">
+                            {% if knn_proba >= 0.7 %}
+                            <span class="high-confidence">High confidence</span>
+                            {% elif knn_proba >= 0.4 %}
+                            <span class="medium-confidence">Medium confidence</span>
+                            {% else %}
+                            <span class="low-confidence">Low confidence</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="parent">
+            <div class="card {{ 'hired' if hire_decision_tree == 1 else 'not-hired' }}">
+                <div class="glass"></div>
+                <div class="content">
+                    <span class="model-name">Decision Tree</span>
+                    <p class="prediction-text">
+                        {{ '✅ Yes, this candidate has the right abilities. You should hire!' if hire_decision_tree == 1 else '❌ No, this candidate may not meet your requirements' }}
+                    </p>
+                    {% if decision_tree_proba is not none %}
+                    <div class="probability-info">
+                        <strong>Hire Probability: </strong>
+                        <span class="probability-value">{{ "%.1f"|format(decision_tree_proba * 100) }}%</span>
+                        <div class="confidence-level">
+                            {% if decision_tree_proba >= 0.7 %}
+                            <span class="high-confidence">High confidence</span>
+                            {% elif decision_tree_proba >= 0.4 %}
+                            <span class="medium-confidence">Medium confidence</span>
+                            {% else %}
+                            <span class="low-confidence">Low confidence</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Consensus Analysis -->
+        {% set avg_probability = ((log_reg_proba or 0) + (knn_proba or 0) + (decision_tree_proba or 0)) / 3 %}
+        {% if hire_log_reg == hire_knn == hire_decision_tree %}
+        <div class="consensus">
+            <h3>🎉 Consensus Reached!</h3>
+            <p>All three models agree on the hiring decision.</p>
+            <p><strong>Average Confidence: {{ "%.1f"|format(avg_probability * 100) }}%</strong></p>
+        </div>
+        {% else %}
+        <div class="mixed-results">
+            <h3>🤔 Mixed Results</h3>
+            <p>The models have different predictions. Consider reviewing this candidate carefully.</p>
+            <p><strong>Average Confidence: {{ "%.1f"|format(avg_probability * 100) }}%</strong></p>
+        </div>
+        {% endif %}
+
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">← Make Another Prediction</a>
+            <a href="{{ url_for('report') }}">📊 View Model Report</a>
+            <a href="{{ url_for('data_analysis') }}">📈 Data Analysis</a>
+        </div>
+
+        <div class="interpretation-guide">
+            <h3>💡 Interpretation Guide</h3>
+            <p><strong>High Confidence (>70%):</strong> Strong agreement with the prediction</p>
+            <p><strong>Medium Confidence (40-70%):</strong> Moderate confidence, consider additional factors</p>
+            <p><strong>Low Confidence (<40%):</strong> Weak prediction, conduct thorough review</p>
+            <p><strong>When models agree:</strong> High confidence in the prediction</p>
+            <p><strong>When models disagree:</strong> Consider additional factors and conduct interviews</p>
+            <p><strong>Remember:</strong> AI predictions are tools to assist, not replace, human decision-making</p>
+        </div>
+    </div>
+</body>
+</html>

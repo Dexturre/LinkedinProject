@@ -1,0 +1,810 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #ffffff;
+    background-color: #000000;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Uiverse.io Main Container Styling */
+.uiverse-container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #000;
+    padding: 35px;
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.uiverse-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    left: -8px;
+    margin: auto;
+    width: calc(100% + 16px);
+    height: calc(100% + 16px);
+    border-radius: 18px;
+    background: linear-gradient(-45deg, #e81cff 0%, #40c9ff 100%);
+    z-index: -10;
+    pointer-events: none;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.uiverse-container::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(-45deg, #fc00ff 0%, #00dbde 100%);
+    transform: translate3d(0, 0, 0) scale(0.95);
+    filter: blur(30px);
+    opacity: 0.7;
+}
+
+.uiverse-container h1 {
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.uiverse-container .form-group label {
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    font-weight: 600;
+}
+
+.uiverse-container input[type="number"],
+.uiverse-container select {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 12px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.uiverse-container input[type="number"]:focus,
+.uiverse-container select:focus {
+    outline: none;
+    border-color: #40c9ff;
+    box-shadow: 0 0 8px rgba(64, 201, 255, 0.4);
+}
+
+.uiverse-container small {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 0.9em;
+}
+
+.uiverse-container .nav-links a {
+    background: linear-gradient(135deg, #e81cff, #40c9ff);
+    border: none;
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.uiverse-container .nav-links a:hover {
+    background: linear-gradient(135deg, #fc00ff, #00dbde);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(252, 0, 255, 0.3);
+}
+
+.uiverse-container:hover::after {
+    filter: blur(40px);
+    opacity: 0.8;
+}
+
+.uiverse-container:hover::before {
+    transform: rotate(-90deg) scaleX(1.34) scaleY(0.77);
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+}
+
+h2 {
+    color: #34495e;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+label {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1.1em;
+}
+
+input[type="number"] {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="number"]:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+input[type="submit"] {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+/* Result Styles */
+.result-container {
+    text-align: center;
+    padding: 30px;
+}
+
+.prediction {
+    background: #f8f9fa;
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+}
+
+.prediction.hired {
+    border-left-color: #27ae60;
+    background: #e8f5e8;
+}
+
+.prediction.not-hired {
+    border-left-color: #e74c3c;
+    background: #fde8e8;
+}
+
+.prediction h3 {
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.prediction p {
+    font-size: 1.2em;
+    font-weight: 500;
+}
+
+/* Navigation Links */
+.nav-links {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.nav-links a {
+    display: inline-block;
+    margin: 0 10px;
+    padding: 12px 24px;
+    background: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.nav-links a:hover {
+    background: #2980b9;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .uiverse-container {
+        margin: 10px;
+        padding: 25px;
+    }
+    
+    .uiverse-container::before {
+        left: -5px;
+        width: calc(100% + 10px);
+        height: calc(100% + 10px);
+    }
+    
+    h1 {
+        font-size: 2em;
+    }
+    
+    input[type="submit"] {
+        padding: 12px;
+        font-size: 16px;
+    }
+    
+    .nav-links a {
+        display: block;
+        margin: 10px 0;
+    }
+}
+
+/* Alert Styles */
+.alert {
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+/* Loading Animation */
+.loading {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Uiverse.io Button Styling */
+.uiverse-button {
+  cursor: pointer;
+  font-size: 1.4rem;
+  border-radius: 16px;
+  border: none;
+  padding: 2px;
+  background: radial-gradient(circle 80px at 80% -10%, #ffffff, #181b1b);
+  position: relative;
+  display: inline-block;
+  margin: 20px 0;
+  transition: transform 0.2s ease;
+}
+
+.uiverse-button::after {
+  content: "";
+  position: absolute;
+  width: 65%;
+  height: 60%;
+  border-radius: 120px;
+  top: 0;
+  right: 0;
+  box-shadow: 0 0 20px #ffffff38;
+  z-index: -1;
+}
+
+.uiverse-button .blob1 {
+  position: absolute;
+  width: 70px;
+  height: 100%;
+  border-radius: 16px;
+  bottom: 0;
+  left: 0;
+  background: radial-gradient(
+    circle 60px at 0% 100%,
+    #3fe9ff,
+    #0000ff80,
+    transparent
+  );
+  box-shadow: -10px 10px 30px #0051ff2d;
+  z-index: 1;
+}
+
+.uiverse-button .inner {
+  padding: 14px 25px;
+  border-radius: 14px;
+  color: #fff;
+  z-index: 3;
+  position: relative;
+  background: radial-gradient(circle 80px at 80% -50%, #777777, #0f1111);
+  display: block;
+  font-weight: 600;
+  font-family: inherit;
+}
+
+.uiverse-button .inner::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  border-radius: 14px;
+  background: radial-gradient(
+    circle 60px at 0% 100%,
+    #00e1ff1a,
+    #0000ff11,
+    transparent
+  );
+  position: absolute;
+  z-index: -1;
+}
+
+.uiverse-button:hover {
+  transform: translateY(-2px);
+}
+
+.uiverse-button:active {
+  transform: translateY(0);
+}
+
+/* Uiverse.io System Card Styling */
+.system-card {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  background-color: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  padding: 25px;
+  gap: 15px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: white;
+  margin: 30px auto 0 auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.system-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  left: -6px;
+  margin: auto;
+  width: calc(100% + 12px);
+  height: calc(100% + 12px);
+  border-radius: 14px;
+  background: linear-gradient(-45deg, #e81cff 0%, #40c9ff 100%);
+  z-index: -10;
+  pointer-events: none;
+  transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.system-card::after {
+  content: "";
+  z-index: -1;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(-45deg, #fc00ff 0%, #00dbde 100%);
+  transform: translate3d(0, 0, 0) scale(0.95);
+  filter: blur(25px);
+  opacity: 0.8;
+}
+
+.system-card h3.heading {
+  font-size: 26px;
+  text-transform: capitalize;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #ffffff;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.system-card p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.system-card ul {
+  margin-left: 25px;
+  margin-bottom: 20px;
+}
+
+.system-card ul li {
+  margin-bottom: 8px;
+  font-size: 15px;
+  position: relative;
+}
+
+.system-card ul li::before {
+  content: "•";
+  color: #e81cff;
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+.system-card p:last-child {
+  color: #e81cff;
+  font-weight: 600;
+  margin-bottom: 0;
+  font-size: 15px;
+  text-align: center;
+}
+
+.system-card:hover::after {
+  filter: blur(35px);
+  opacity: 0.9;
+}
+
+.system-card:hover::before {
+  transform: rotate(-90deg) scaleX(1.34) scaleY(0.77);
+}
+
+/* Responsive adjustments for system card */
+@media (max-width: 768px) {
+  .system-card {
+    margin: 20px 10px 0 10px;
+    padding: 20px;
+  }
+  
+  .system-card h3.heading {
+    font-size: 22px;
+  }
+  
+  .system-card p {
+    font-size: 14px;
+  }
+  
+  .system-card ul li {
+    font-size: 14px;
+  }
+  
+  .system-card p:last-child {
+    font-size: 14px;
+  }
+}
+
+/* Uiverse.io Glass Radio Button Styling */
+.glass-radio-group-vertical {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0);
+  padding: 1.5rem 1.2rem;
+  border: 0px solid rgb(255, 255, 255, 0);
+  border-radius: 1rem;
+  backdrop-filter: blur(16px);
+  width: 100%;
+  max-width: 300px;
+  overflow: hidden;
+  gap: 0.5rem;
+  margin: 15px 0;
+}
+
+.glass-radio-group-vertical input {
+  display: none;
+}
+
+.glass-radio-group-vertical label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 1.2rem;
+  border-radius: 0.8rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #ccc;
+  cursor: pointer;
+  z-index: 2;
+  transition: all 0.4s ease-in-out;
+  overflow: hidden;
+}
+
+.glass-radio-group-vertical .label-text {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.glass-radio-group-vertical .radio-indicator {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  background: #999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: white;
+  box-shadow: 0 0 0 2px transparent;
+  transition: all 0.3s ease-in-out;
+}
+
+.glass-radio-group-vertical .checkmark {
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.3s ease-in-out;
+}
+
+.glass-radio-group-vertical .glass-glider-vertical {
+  position: absolute;
+  left: 0;
+  height: 56px;
+  width: 80%;
+  margin-left: 20px;
+  border-radius: 0.8rem;
+  z-index: 1;
+  transition:
+    transform 0.4s cubic-bezier(0.5, 1.6, 0.4, 1),
+    background 0.5s ease-in-out,
+    box-shadow 0.4s;
+}
+
+#experience-entry:checked ~ .glass-glider-vertical {
+  transform: translateY(0%);
+  background: linear-gradient(135deg, #00000050, #d1d1d1cc);
+  box-shadow: 0 0 15px #00000077;
+}
+#experience-entry:checked + label {
+  color: white;
+}
+#experience-entry:checked + label .radio-indicator {
+  background: #c0c0c0;
+  box-shadow:
+    0 0 0 2px #858585aa,
+    0 0 6px #6b6b6baa;
+}
+#experience-entry:checked + label .checkmark {
+  opacity: 1;
+  transform: scale(1);
+}
+
+#experience-mid:checked ~ .glass-glider-vertical {
+  transform: translateY(115%);
+  background: linear-gradient(135deg, #00000050, #ffbb00);
+  box-shadow: 0 0 15px #00000077;
+}
+#experience-mid:checked + label {
+  color: white;
+}
+#experience-mid:checked + label .radio-indicator {
+  background: #ffc400;
+  box-shadow:
+    0 0 0 2px #9c7300d3,
+    0 0 6px #695a00aa;
+}
+#experience-mid:checked + label .checkmark {
+  opacity: 1;
+  transform: scale(1);
+}
+
+#experience-senior:checked ~ .glass-glider-vertical {
+  transform: translateY(230%);
+  background: linear-gradient(135deg, #00000050, #57d5ff);
+  box-shadow: 0 0 15px #00000077;
+}
+#experience-senior:checked + label {
+  color: white;
+}
+#experience-senior:checked + label .radio-indicator {
+  background: #75c5ff;
+  box-shadow:
+    0 0 0 2px #0095ff5b,
+    0 0 6px #0095ff57;
+}
+#experience-senior:checked + label .checkmark {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.glass-radio-group-vertical:has(#experience-entry:checked) {
+  border-color: #c0c0c0;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.2),
+    inset 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+.glass-radio-group-vertical:has(#experience-mid:checked) {
+  border-color: #ffbb00;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.2),
+    inset 0 0 8px rgba(255, 196, 0, 0.527);
+}
+
+.glass-radio-group-vertical:has(#experience-senior:checked) {
+  border-color: #57d5ff;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.2),
+    inset 0 0 8px rgba(0, 183, 255, 0.63);
+}
+
+/* Responsive adjustments for glass radio */
+@media (max-width: 768px) {
+  .glass-radio-group-vertical {
+    max-width: 250px;
+    padding: 1rem;
+  }
+  
+  .glass-radio-group-vertical label {
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Uiverse.io Glass Input Styling */
+.glass-input-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  margin: 15px 0;
+}
+
+.glass-input {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  border: none;
+  border-radius: 0.8rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.glass-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.glass-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #40c9ff, 0 0 15px rgba(64, 201, 255, 0.4);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.glass-input:hover {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive adjustments for glass input */
+@media (max-width: 768px) {
+  .glass-input-container {
+    max-width: 250px;
+  }
+  
+  .glass-input {
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+.cardd{
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #000;
+    padding: 35px;
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.uiverse-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    left: -8px;
+    margin: auto;
+    width: calc(100% + 16px);
+    height: calc(100% + 16px);
+    border-radius: 18px;
+    background: linear-gradient(-45deg, #e81cff 0%, #40c9ff 100%);
+    z-index: -10;
+    pointer-events: none;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.uiverse-container::after {
+    content: "";
+    z-index: -1;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(-45deg, #fc00ff 0%, #00dbde 100%);
+    transform: translate3d(0, 0, 0) scale(0.95);
+    filter: blur(30px);
+    opacity: 0.7;
+}
+
+.uiverse-container h1 {
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.uiverse-container .form-group label {
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    font-weight: 600;
+}
+
+.uiverse-container .nav-links a {
+    background: linear-gradient(135deg, #e81cff, #40c9ff);
+    border: none;
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.uiverse-container .nav-links a:hover {
+    background: linear-gradient(135deg, #fc00ff, #00dbde);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(252, 0, 255, 0.3);
+}
+
+.uiverse-container:hover::after {
+    filter: blur(40px);
+    opacity: 0.8;
+}
+
+.uiverse-container:hover::before {
+    transform: rotate(-90deg) scaleX(1.34) scaleY(0.77);
+}
+
